@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="phonebook">
+
+	
+	<resultMap id="resultMapPersonVo" type="com.javaex.vo.PersonVo" >
+	    <result column="person_id" property="personId" />
+	    <result column="name" property="name" />
+	    <result column="hp" property="hp" />
+	    <result column="company" property="company" />
+	</resultMap>
+
+
+	<!-- 다른 케이스 -->
+	<!-- 리서트맵을 통해 vo필드명과 같게 변경 -->
+	<select id="selectList2" resultMap="resultMapPersonVo">
+	
+		<![CDATA[
+			select person_id,
+	        	   name,
+	       		   hp,
+	      		   company
+			from person
+			order by person_id desc
+			
+		]]>
+
+	</select>
+	
+	<!-- 전화번호 한개 가져오기 -->
+	<select id="selectone" parameterType="int" resultType = "com.javaex.vo.PersonVo">
+		<![CDATA[
+			select person_id personId,
+ 			       name,
+  			       hp,
+   			       company
+			from person
+			where person_id = #{person_id}
+		
+		]]>
+	
+	</select>
+	
+	<!-- 컬럼명을 아예 vo와 같게 변경한 경우 -->
+	<select id="selectList" resultType="com.javaex.vo.PersonVo">
+	
+		<![CDATA[
+			select person_id as personId,
+	        	   name,
+	       		   hp,
+	      		   company
+			from person
+			order by person_id desc
+			
+		]]>
+
+	</select>
+	
+	<!-- 전화번호 저장 -->
+	<insert id = "insert" parameterType= "com.javaex.vo.PersonVo">
+		
+		<![CDATA[
+			insert into person
+				   values(seq_person_id.nextval,
+    			   #{name},
+   				   #{hp},
+    			   #{company}
+     			   )
+		
+		]]>
+	</insert>
+	<!-- 전화번호 삭제 -->
+	<delete id = "delete" parameterType="int">
+		<![CDATA[
+	
+			delete person
+			where person_id= #{person_ic}
+	
+		]]>		
+	</delete>
+	
+	<update id = "update" parameterType = "com.javaex.vo.PersonVo">
+		<![CDATA[
+			UPDATE PERSON
+			SET NAME = #{name},
+ 			    HP = #{hp},
+  			    COMPANY = #{company}
+			WHERE PERSON_ID = #{personId}
+		
+		]]>
+	
+	</update>
+
+</mapper>
+
